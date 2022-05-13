@@ -1,0 +1,1 @@
+mongodb+srv://Timon0305:stablespay@stablespay.prrea.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
