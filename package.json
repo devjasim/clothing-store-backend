@@ -1,0 +1,34 @@
+{
+  "name": "stablespay-backend",
+  "version": "1.0.0",
+  "description": "mongodb+srv://Timon0305:stablespay@stablespay.prrea.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/StablesPay-Stage/stablespay-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StablesPay-Stage/stablespay-backend/issues"
+  },
+  "homepage": "https://github.com/StablesPay-Stage/stablespay-backend#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.3",
+    "nodemon": "^2.0.16",
+    "swagger-jsdoc": "6.1.0",
+    "swagger-ui-express": "^4.4.0"
+  }
+}
