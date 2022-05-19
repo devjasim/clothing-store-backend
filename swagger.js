@@ -5,8 +5,8 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Hero API',
-      description: 'Example of CRUD API ',
+      title: 'Stables Pay APIs',
+      description: 'Stable backend Rest APIs',
       version: '1.0.0',
     },
   },

@@ -1,7 +1,7 @@
 mongodb+srv://Timon0305:stablespay@stablespay.prrea.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 
-##Run Project
+##Run Project:
 yarn start
 
 ##Swagger URL
