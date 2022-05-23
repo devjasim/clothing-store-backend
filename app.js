@@ -3,7 +3,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser'
 import mongoose from "mongoose";
 
-import userRoutes from './routes/users.route.js';
+import userRoutes from './routes/users.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 import swaggerDocs from "./swagger.js";
 import config from "./config/config.js";
 
@@ -27,6 +28,7 @@ mongoose.connect(CONNECTION_URL, {
     swaggerDocs(app, PORT)
   })).catch((error) => console.log(error.message));
 
-app.use("/user", userRoutes);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/admin", adminRoutes);
 
 

@@ -4,12 +4,24 @@ const userSchema = mongoose.Schema({
   userName: {type: String, required: true},
   email: {type: String, required: true},
   password: {type: String, required: true},
-  avatar: String,
+  avatar: {
+    type: String,
+    default: "",
+  },
   isVerified: {
     type: Boolean,
     default: false,
   },
-  id: String
+  id: String,
+  roles: {
+    type: String,
+    required: true,
+    default: "user",
+    enum: ["user", "admin"]
+  },
+  otp: {
+    type: String,
+  }
 }, {timestamps: true});
 
 export default mongoose.model("User", userSchema);

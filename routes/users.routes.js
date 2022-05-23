@@ -1,13 +1,13 @@
 import express from "express";
-import { googleLogin, signin, signup, updateUser } from "../controllers/user.controller.js";
-import userAuth from "../middleware/auth.middleware.js";
+import { googleLogin, signin, signup, updateUser, verifyEmail } from "../controllers/user.controller.js";
+import userAuth from "../middleware/user.auth.js";
 const router = express.Router();
 
 /**
  * @openapi
  * /user/signin:
  *   post:
- *     summary: Create a JSONPlaceholder user.
+ *     summary: Sing in user
  *     requestBody:
  *       required: true
  *       content:
@@ -31,26 +31,26 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                     fuserName:
+ *                     userName:
  *                       type: string
  *                       description: The user's name.
  *                       example: Leanne Graham
  *                     email:
  *                       type: string
- *                       description: The user's name.
+ *                       description: The user's email.
  *                       example: waht@gmail.com
  *                     password:
  *                       type: string
- *                       description: The user's name.
+ *                       description: The user's password.
  *                       example: asdfaq2414324
  *                     _id:
  *                       type: string
  *                       description: uesr id.
  *                       example: asdfaq2414324
  *                     isVerified:
- *                       type: string
+ *                       type: boolean
  *                       description: user email verification.
- *                       example: asdfaq2414324
+ *                       example: true
  *                     createdAt:
  *                       type: date time
  *                       description: created date
@@ -68,7 +68,7 @@ router.post("/signin", signin);
  * @openapi
  * /user/signup:
  *   post:
- *     summary: Pass user information
+ *     summary: Register and create user account
  *     requestBody:
  *       required: true
  *       content:
@@ -106,20 +106,20 @@ router.post("/signin", signin);
  *                       example: Leanne Graham
  *                     email:
  *                       type: string
- *                       description: The user's name.
+ *                       description: The user's email.
  *                       example: waht@gmail.com
  *                     password:
  *                       type: string
- *                       description: The user's name.
+ *                       description: The user's password.
  *                       example: asdfaq2414324
  *                     _id:
  *                       type: string
  *                       description: uesr id.
  *                       example: asdfaq2414324
  *                     isVerified:
- *                       type: string
+ *                       type: boolean
  *                       description: user email verification.
- *                       example: asdfaq2414324
+ *                       example: false
  *                     createdAt:
  *                       type: date time
  *                       description: created date
@@ -132,12 +132,11 @@ router.post("/signin", signin);
 */
 router.post("/signup", signup);
 
-
 /**
  * @openapi
  * /user/google-login:
  *   post:
- *     summary: Pass google tokenId
+ *     summary: Login with google account
  *     requestBody:
  *       required: true
  *       content:
@@ -147,11 +146,11 @@ router.post("/signup", signup);
  *               properties:
  *                     tokenId:
  *                       type: string
- *                       description: userName
- *                       example: "eyJhbGciOiJSUzI1NiIsImtpZCI6ImIxYTgyNTllYjA3NjYwZWYyMzc4MWM4NWI3ODQ5YmZhMGExYzgwNmMiLCJ0eXAiOiJKV1QifQ"
+ *                       description: pass gogole token ID
+ *                       example: "qrqwtqwtqwrwqrqwrqwtqwrqrqwrqeqwe"
  *     responses:
  *       201:
- *         description: Created
+ *         description: User information
  *         content:
  *           application/json:
  *             schema:
@@ -163,20 +162,20 @@ router.post("/signup", signup);
  *                       example: Leanne Graham
  *                     email:
  *                       type: string
- *                       description: The user's name.
+ *                       description: The user's email.
  *                       example: waht@gmail.com
  *                     password:
  *                       type: string
- *                       description: The user's name.
+ *                       description: The user's password.
  *                       example: asdfaq2414324
  *                     _id:
  *                       type: string
  *                       description: uesr id.
  *                       example: asdfaq2414324
  *                     isVerified:
- *                       type: string
+ *                       type: boolean
  *                       description: user email verification.
- *                       example: asdfaq2414324
+ *                       example: true
  *                     createdAt:
  *                       type: date time
  *                       description: created date
@@ -189,11 +188,12 @@ router.post("/signup", signup);
 */
 router.post("/google-login", googleLogin);
 
+
 /**
  * @openapi
  * /user/update/:id:
- *   post:
- *     summary: Create a JSONPlaceholder user.
+ *   patch:
+ *     summary: Update user
  *     requestBody:
  *       required: true
  *       content:
@@ -204,7 +204,7 @@ router.post("/google-login", googleLogin);
  *                     userName:
  *                       type: string
  *                       description: userName
- *                       example: "Jasim Uddin"
+ *                       example: "John Doe"
  *     responses:
  *       201:
  *         description: Created
@@ -216,7 +216,7 @@ router.post("/google-login", googleLogin);
  *                     userName:
  *                       type: string
  *                       description: The user's name.
- *                       example: Leanne Graham
+ *                       example: John Doe
  *                     email:
  *                       type: string
  *                       description: The user's name.
@@ -230,9 +230,9 @@ router.post("/google-login", googleLogin);
  *                       description: uesr id.
  *                       example: asdfaq2414324
  *                     isVerified:
- *                       type: string
+ *                       type: boolean
  *                       description: user email verification.
- *                       example: asdfaq2414324
+ *                       example: true
  *                     createdAt:
  *                       type: date time
  *                       description: created date
@@ -242,7 +242,8 @@ router.post("/google-login", googleLogin);
  *                       description: updated date
  *                       example: 2022-05-17T22:00:24.332+00:00
 */
-
 router.patch("/update/:id", userAuth, updateUser);
+
+router.post("/verify-user", verifyEmail)
 
 export default router;
