@@ -1,15 +1,16 @@
 import jwt from 'jsonwebtoken';
+import config from '../config/config.js';
 
 const userAuth = async(req, res, next) => {
   try {
-    if(req.headers.authorization) {
-      const token = req.headers.authorization?.split(" ")[1];
+    if(req.headers?.authorization) {
+      const token = req.headers.authorization.split(" ")[1];
       const isCustomAuth = token.length < 500;
 
       let decodedData;
 
       if(token && isCustomAuth) {
-        decodedData = jwt.verify(token, "test");
+        decodedData = jwt.verify(token, config.JWT_SECRET);
 
         req.userId = decodedData?.id;
       } else {
@@ -17,13 +18,14 @@ const userAuth = async(req, res, next) => {
 
         req.userId = decodedData?.sub;
       }
+
       next();
     } else {
       res.status(400).json({message: "JWT Token not found or invalid"})
     }
 
   } catch (error) {
-    console.log("Auth Middleware", error)
+    res.status(400).json(error)
   }
 }
 
