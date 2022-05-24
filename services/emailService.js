@@ -2,11 +2,16 @@ import nodemailer from 'nodemailer';
 import config from '../config/config.js';
 
 const MAIL_SETTINGS = {
-  service: 'gmail',
+  host: config.SMTP_HOST,
+  port: config.SMTP_PORT,
+  secure: true,
   auth: {
-    user: config.MAIL_EMAIL,
-    pass: config.MAIL_PASSWORD,
+    user: config.SMTP_MAIL,
+    pass: config.SMTP_PASSWORD,
   },
+  tls: {
+    rejectUnauthorized: false,
+  }
 };
 
 const transporter = nodemailer.createTransport(MAIL_SETTINGS);
@@ -14,7 +19,7 @@ const transporter = nodemailer.createTransport(MAIL_SETTINGS);
 export const sendMail = async (params) => {
   try {
     let info = await transporter.sendMail({
-      from: MAIL_SETTINGS.auth.user,
+      from: "'Stablespay Service' <emailservice@stablespay.com>",
       to: params.to, 
       subject: 'Hello ✔',
       html: `

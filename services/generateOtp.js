@@ -1,8 +1,7 @@
-const generateOtp = () => {
-  var otp = Math.random();
-  otp = otp * 1000000;
-  otp = parseInt(otp);
+import random from 'random';
 
+const generateOtp = () => {
+  const otp = random.int(100000, 999999) 
   return otp;
 }
 export default generateOtp;
