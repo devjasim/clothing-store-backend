@@ -1,5 +1,5 @@
 import express from "express";
-import { googleLogin, signin, signup, updateUser, verifyEmail } from "../controllers/user.controller.js";
+import { getUser, googleLogin, signin, signup, updateUser, verifyEmail } from "../controllers/user.controller.js";
 import userAuth from "../middleware/user.auth.js";
 const router = express.Router();
 
@@ -188,6 +188,7 @@ router.post("/signup", signup);
 */
 router.post("/google-login", googleLogin);
 
+router.get("/get-user/:id", userAuth, getUser);
 
 /**
  * @openapi

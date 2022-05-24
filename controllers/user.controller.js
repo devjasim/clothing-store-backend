@@ -33,12 +33,9 @@ export const signin = async(req, res) => {
 
 export const signup = async(req, res) => {
   const { userName, email, password, confirmPassword  } = req.body;
-
   try {
+    const OTP = generateOtp();
     const existingUser = await User.findOne({ email, roles: "user" });
-
-    const OTP = generateOtp()
-
     if(existingUser && !existingUser?.isVerified) return res.status(400).json({message: "User already exists and not verified"})
 
     if(existingUser && existingUser?.isVerified === true) return res.status(400).json({message: "User already exists."})
@@ -51,14 +48,12 @@ export const signup = async(req, res) => {
 
     const result = await User.create({ email, password: hashedPassword, userName: userName, otp: hashedOtp })
 
-    const token = jwt.sign({ email: result.email, id: result._id }, config.JWT_SECRET, {expiresIn: "240h"});
-
     try {
       await sendMail({
         to: email,
         OTP: OTP,
       });
-      return res.status(200).json({ result, token });
+      return res.status(200).json({ result });
     } catch (error) {
       return [false, 'Unable to sign up, Please try again later', error];
     }
@@ -85,7 +80,8 @@ export const verifyEmail = async(req, res) => {
     if(err) {
       return res.status(400).json({message: "Something went wrong."})
     } else {
-      return res.status(200).json({result: result})
+      const token = jwt.sign({ email: result.email, id: result._id }, config.JWT_SECRET, {expiresIn: "240h"});
+      return res.status(200).json({result, token})
     }
   })
 }
@@ -127,6 +123,24 @@ export const googleLogin = async(req, res) => {
       })
     }
   })
+
+}
+
+export const getUser = async(req, res) => {
+  const {id: _id} = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+  return res.status(404).send("No user found with this ID");
+  
+  if(_id) {
+    const getUser = await User.findById(_id);
+
+    if(!getUser) {
+      return res.status(404).json({message: "User doesn't exists!"});
+    };
+
+    res.status(200).json({result: getUser});
+  }
 
 }
 
