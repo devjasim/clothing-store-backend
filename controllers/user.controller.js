@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
+import jwt, { decode } from 'jsonwebtoken';
 import { OAuth2Client } from "google-auth-library";
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
@@ -89,7 +89,7 @@ export const verifyEmail = async(req, res) => {
 export const googleLogin = async(req, res) => {
     const { tokenId } = req.body;
     
-    googlelClient.verifyIdToken({idToken: tokenId, audience: "732960774937-9dm36clu457k26uugmlg0c1vluold56h.apps.googleusercontent.com"}).then(response => {
+    googlelClient.verifyIdToken({idToken: tokenId, audience: config.GOOGLE_CLIENT_ID}).then(response => {
       
     const {email_verified: isVerified, name: userName, email, picture: avatar} = response.payload
 
@@ -100,12 +100,19 @@ export const googleLogin = async(req, res) => {
             message: "Something went wrong"
           })
         } else {
-          if(user) { 
+          if(user) {
             const token = jwt.sign({ email: user.email, id: user._id }, config.JWT_SECRET, {expiresIn: "240h"});
-            if(!user.isVerified) return res.status(400).json({
-              message: "User already exists but email is not verified"
-            })
-            res.status(200).json({ result: user, token });
+            if(!user.isVerified) {
+              User.findByIdAndUpdate(user._id, { $set: { isVerified, avatar }}, { new: true }, (err, result) => {
+                if(err) {
+                  return res.status(400).json({message: "Something went wrong."})
+                } else {
+                  return res.status(200).json({result, token})
+                }
+              })
+            } else {
+              res.status(200).json({ result: user, token });
+            }
           } else {
             try {
               const hashedPassword = await bcrypt.hash(email, 12);
@@ -127,7 +134,15 @@ export const googleLogin = async(req, res) => {
 }
 
 export const getUser = async(req, res) => {
-  const {id: _id} = req.params;
+  const token = req.headers.authorization.split(" ")[1];
+
+  let decodedData;
+
+  if(token) {
+    decodedData = jwt.verify(token, config.JWT_SECRET);
+  }
+
+  const {id: _id} = decodedData;
 
   if (!mongoose.Types.ObjectId.isValid(_id))
   return res.status(404).send("No user found with this ID");

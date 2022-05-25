@@ -188,7 +188,7 @@ router.post("/signup", signup);
 */
 router.post("/google-login", googleLogin);
 
-router.get("/get-user/:id", userAuth, getUser);
+router.get("/get-user", userAuth, getUser);
 
 /**
  * @openapi
