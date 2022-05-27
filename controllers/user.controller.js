@@ -46,7 +46,7 @@ export const signup = async(req, res) => {
 
     const hashedOtp = await bcrypt.hash(OTP.toString(), 12);
 
-    const result = await User.create({ email, password: hashedPassword, userName: userName, otp: hashedOtp })
+    const result = await User.create({ email, password: hashedPassword, changePass: true, userName: userName, otp: hashedOtp })
 
     try {
       await sendMail({
