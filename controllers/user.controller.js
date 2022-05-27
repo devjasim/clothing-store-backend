@@ -7,7 +7,7 @@ import config from "../config/config.js";
 import { sendMail } from "../services/emailService.js";
 import generateOtp from "../services/generateOtp.js";
 
-const googlelClient = new OAuth2Client("732960774937-9dm36clu457k26uugmlg0c1vluold56h.apps.googleusercontent.com")
+const googlelClient = new OAuth2Client(config.GOOGLE_CLIENT_ID)
 
 export const signin = async(req, res) => {
   const { email, password } = req.body;
@@ -103,7 +103,7 @@ export const googleLogin = async(req, res) => {
           if(user) {
             const token = jwt.sign({ email: user.email, id: user._id }, config.JWT_SECRET, {expiresIn: "240h"});
             if(!user.isVerified) {
-              User.findByIdAndUpdate(user._id, { $set: { isVerified, avatar }}, { new: true }, (err, result) => {
+              User.findByIdAndUpdate(user._id, { $set: { isVerified, avatar: user.avatar ? user.avatar : avatar }}, { new: true }, (err, result) => {
                 if(err) {
                   return res.status(400).json({message: "Something went wrong."})
                 } else {
