@@ -163,13 +163,11 @@ export const updateUser = async(req, res) => {
   const token = req.headers.authorization.split(" ")[1];
 
   let decodedData;
-
   if(token) {
     decodedData = jwt.verify(token, config.JWT_SECRET);
   }
-
   const {id: _id} = decodedData;
-  
+
   const user = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(_id))
