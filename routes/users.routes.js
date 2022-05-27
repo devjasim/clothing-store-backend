@@ -243,7 +243,7 @@ router.get("/get-user", userAuth, getUser);
  *                       description: updated date
  *                       example: 2022-05-17T22:00:24.332+00:00
 */
-router.patch("/update/:id", userAuth, updateUser);
+router.patch("/update", userAuth, updateUser);
 
 router.post("/verify-user", verifyEmail)
 
