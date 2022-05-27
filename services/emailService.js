@@ -17,9 +17,10 @@ const MAIL_SETTINGS = {
 const transporter = nodemailer.createTransport(MAIL_SETTINGS);
 
 export const sendMail = async (params) => {
+  console.log("SM", config)
   try {
     let info = await transporter.sendMail({
-      from: `'Stablespay Service' <${config.SMTP_MAIL}>`,
+      from: '"Stablespay Service" <no-reply@stablespay.com>',
       to: params.to, 
       subject: 'Email verification code',
       html: `
