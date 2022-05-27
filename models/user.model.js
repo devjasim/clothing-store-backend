@@ -21,6 +21,10 @@ const userSchema = mongoose.Schema({
   },
   otp: {
     type: String,
+  },
+  changePass: {
+    type: Boolean,
+    default: false
   }
 }, {timestamps: true});
 
