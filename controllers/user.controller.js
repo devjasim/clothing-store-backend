@@ -1,11 +1,12 @@
 import bcrypt from "bcryptjs";
-import jwt, { decode } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { OAuth2Client } from "google-auth-library";
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
 import config from "../config/config.js";
 import { sendMail } from "../services/emailService.js";
 import generateOtp from "../services/generateOtp.js";
+import fs from 'fs';
 
 const googlelClient = new OAuth2Client(config.GOOGLE_CLIENT_ID)
 
@@ -14,13 +15,13 @@ export const signin = async(req, res) => {
   try {
     const existingUser = await User.findOne({ email });
 
-    if(!existingUser) return res.status(404).json({ message: "User doesn't exist." });
-
-    if(!existingUser.isVerified) return res.status(400).json({ message: "Uesr is not verified." });
+    if(!existingUser) return res.status(404).json({ message: "User doesn't exist.", isUserExists: false });
 
     const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
 
     if(!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" })
+
+    if(!existingUser.isVerified) return res.status(400).json({ message: "Uesr is not verified.", isVerified: existingUser.isVerified, email: existingUser.email });
 
     const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, config.JWT_SECRET, {expiresIn: "240h"});
 
@@ -144,8 +145,7 @@ export const getUser = async(req, res) => {
 
   const {id: _id} = decodedData;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-  return res.status(404).send("No user found with this ID");
+  if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("No user found with this ID");
   
   if(_id) {
     const getUser = await User.findById(_id);
@@ -163,15 +163,16 @@ export const updateUser = async(req, res) => {
   const token = req.headers.authorization.split(" ")[1];
 
   let decodedData;
+
   if(token) {
     decodedData = jwt.verify(token, config.JWT_SECRET);
   }
+
   const {id: _id} = decodedData;
 
   const user = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("No user found with this ID");
+  if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("No user found with this ID");
 
   const userExits = await User.findById(_id);
 
@@ -208,7 +209,7 @@ export const updateUser = async(req, res) => {
 export const resendOtp = async(req, res) => {
   const { email } = req.body;
 
-  const user = await Uesr.findOne(email);
+  const user = await User.findOne({email, roles: "user"});
 
   if(!user) return res.status(404).json({message: "User doesn't exists"});
 
@@ -230,7 +231,6 @@ export const resendOtp = async(req, res) => {
       OTP: OTP,
     });
   } catch (error) {
-    return [false, 'Unable to sign up, Please try again later', error];
+    return [false, 'Unable to resend OTP, please try agian later!', error];
   }
-
 }

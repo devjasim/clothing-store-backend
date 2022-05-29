@@ -10,10 +10,10 @@ import config from "./config/config.js";
 
 const app = express();
 
-app.use(bodyParser.json({limit: "30mb", extended: true}));
-app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+app.use(bodyParser.json({limit: "100mb", extended: true}));
+app.use(bodyParser.urlencoded({limit: "100mb", extended: true}));
 app.use(cors({
-  origin: "*",
+  origin: "*"
 }));
 
 const CONNECTION_URL = config.DATABASE_URL;
