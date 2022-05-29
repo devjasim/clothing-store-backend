@@ -1,5 +1,5 @@
 import express from "express";
-import { getUser, googleLogin, signin, signup, updateUser, verifyEmail } from "../controllers/user.controller.js";
+import { getUser, googleLogin, resendOtp, signin, signup, updateUser, verifyEmail } from "../controllers/user.controller.js";
 import userAuth from "../middleware/user.auth.js";
 const router = express.Router();
 
@@ -246,5 +246,7 @@ router.get("/get-user", userAuth, getUser);
 router.patch("/update", userAuth, updateUser);
 
 router.post("/verify-user", verifyEmail)
+
+router.post("/resend-otp", resendOtp);
 
 export default router;

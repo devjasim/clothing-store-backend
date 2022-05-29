@@ -1,7 +1,6 @@
 import express from "express";
-import { signin, signup, getUsers } from "../controllers/admin.controllers.js";
+import { signin, signup, getUsers, deleteUser, updateUser, getUserById, dashboard } from "../controllers/admin.controllers.js";
 import adminAuth from "../middleware/admin.auth.js";
-import userAuth from "../middleware/user.auth.js";
 const router = express.Router();
 
 /**
@@ -120,5 +119,17 @@ router.post("/signup", signup);
 
 // GET ALL REGISTER USER LISTS
 router.get('/get-users', adminAuth, getUsers);
+
+// Delete POST
+router.delete('/delete-user/:id', adminAuth, deleteUser);
+
+// Update user
+router.patch('/update-user/:id', adminAuth, updateUser);
+
+// Get USER BY ID
+router.get('/get-user/:id', adminAuth, getUserById);
+
+// DASHBOARD
+router.get('/dashboard', adminAuth, dashboard);
 
 export default router;
