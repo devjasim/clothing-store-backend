@@ -102,18 +102,18 @@ export const updateUser = async(req, res) => {
 
   if(!userExits) return res.status(404).send("No user found with this ID");
 
-  const {password, newPassword, confirmPassword} = req.body;
+  const {newPassword, confirmPassword} = req.body;
 
   if(newPassword && confirmPassword) {
     const hashedPassword = await bcrypt.hash(newPassword, 12);
     
     if(newPassword !== confirmPassword) return res.status(400).json({ message: "Password don't match!" })
 
-    const isPasswordCorrect = await bcrypt.compare(password, userExits.password);
+    // const isPasswordCorrect = await bcrypt.compare(password, userExits.password);
 
-    if(userExits.changePass && !isPasswordCorrect) return res.status(400).json({ message: "Incorrect password!" })
+    // if(userExits.changePass && !isPasswordCorrect) return res.status(400).json({ message: "Incorrect password!" })
 
-    const update = await User.findByIdAndUpdate(_id, { ...user, password: hashedPassword, changePass: true }, {new: true}).catch(err => res.status(500).json({message: err}))
+    const update = await User.findByIdAndUpdate(_id, { password: hashedPassword }, {new: true}).catch(err => res.status(500).json({message: err}))
 
     return res.status(200).json({
       message: "User is updated",
