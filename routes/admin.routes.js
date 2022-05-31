@@ -1,5 +1,5 @@
 import express from "express";
-import { signin, signup, getUsers, deleteUser, updateUser, getUserById, dashboard } from "../controllers/admin.controllers.js";
+import { signin, signup, getUsers, deleteUser, updateUser, getUserById, dashboard, createUser } from "../controllers/admin.controllers.js";
 import adminAuth from "../middleware/admin.auth.js";
 const router = express.Router();
 
@@ -131,5 +131,8 @@ router.get('/get-user/:id', adminAuth, getUserById);
 
 // DASHBOARD
 router.get('/dashboard', adminAuth, dashboard);
+
+// Create User
+router.post('/create-user', adminAuth, createUser);
 
 export default router;
