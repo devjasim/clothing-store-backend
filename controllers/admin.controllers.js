@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import config from "../config/config.js";
 import mongoose from "mongoose";
 import moment from "moment";
+import generateOtp from "../services/generateOtp.js";
 
 export const signin = async(req, res) => {
   const { email, password } = req.body;
@@ -175,5 +176,29 @@ export const dashboard = async(req, res) => {
 
   } catch (error) {
     return res.status(400).json(error);
+  }
+}
+
+export const createUser = async(req, res) => {
+  const { userName, email, password, confirmPassword, avatar  } = req.body;
+  try {
+    const OTP = generateOtp();
+    const existingUser = await User.findOne({ email, roles: "user" });
+    if(existingUser && !existingUser?.isVerified) return res.status(400).json({message: "User already exists and not verified"})
+
+    if(existingUser && existingUser?.isVerified === true) return res.status(400).json({message: "User already exists."})
+
+    if(password !== confirmPassword) return res.status(400).json({ message: "Password don't match." })
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const hashedOtp = await bcrypt.hash(OTP.toString(), 12);
+
+    const result = await User.create({ email, password: hashedPassword, changePass: true, userName: userName, isVerified: true, otp: hashedOtp, avatar: avatar })
+
+    return res.status(200).json({ result });
+
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong." });
   }
 }
