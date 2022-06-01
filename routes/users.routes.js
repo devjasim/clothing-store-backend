@@ -192,7 +192,7 @@ router.get("/get-user", userAuth, getUser);
 
 /**
  * @openapi
- * /user/update/:id:
+ * /user/update:
  *   patch:
  *     summary: Update user
  *     requestBody:
@@ -245,8 +245,124 @@ router.get("/get-user", userAuth, getUser);
 */
 router.patch("/update", userAuth, updateUser);
 
+/**
+ * @openapi
+ * /user/verify-user:
+ *   post:
+ *     summary: Verfify user email
+ *     requestBody:
+ *       required: true
+ *       content:
+ *        application/json:
+ *          schema:
+ *               type: object
+ *               properties:
+ *                     email:
+ *                       type: string
+ *                       description: pass user email
+ *                       example: "example@gmail.com"
+ *     responses:
+ *       200:
+ *         description: User information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                     userName:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: waht@gmail.com
+ *                     password:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: asdfaq2414324
+ *                     _id:
+ *                       type: string
+ *                       description: uesr id.
+ *                       example: asdfaq2414324
+ *                     isVerified:
+ *                       type: boolean
+ *                       description: user email verification.
+ *                       example: false
+ *                     otp:
+ *                       type: string
+ *                       description: user hashed otp
+ *                       example: 234234243524wf
+ *                     createdAt:
+ *                       type: date time
+ *                       description: created date
+ *                       example: 2022-05-17T22:00:24.332+00:00
+ *                     updatedAt:
+ *                       type: date time
+ *                       description: updated date
+ *                       example: 2022-05-17T22:00:24.332+00:00
+ *                   
+*/
 router.post("/verify-user", verifyEmail)
 
+/**
+ * @openapi
+ * /user/verify-user:
+ *   post:
+ *     summary: Resend OTP to user email
+ *     requestBody:
+ *       required: true
+ *       content:
+ *        application/json:
+ *          schema:
+ *               type: object
+ *               properties:
+ *                     email:
+ *                       type: string
+ *                       description: pass user email
+ *                       example: "example@gmail.com"
+ *     responses:
+ *       200:
+ *         description: User information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                     userName:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: waht@gmail.com
+ *                     password:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: asdfaq2414324
+ *                     _id:
+ *                       type: string
+ *                       description: uesr id.
+ *                       example: asdfaq2414324
+ *                     isVerified:
+ *                       type: boolean
+ *                       description: user email verification.
+ *                       example: false
+ *                     otp:
+ *                       type: string
+ *                       description: user hashed otp
+ *                       example: false
+ *                     createdAt:
+ *                       type: date time
+ *                       description: created date
+ *                       example: 2022-05-17T22:00:24.332+00:00
+ *                     updatedAt:
+ *                       type: date time
+ *                       description: updated date
+ *                       example: 2022-05-17T22:00:24.332+00:00
+ *                   
+*/
 router.post("/resend-otp", resendOtp);
 
 export default router;
