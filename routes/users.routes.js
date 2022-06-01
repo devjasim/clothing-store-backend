@@ -7,6 +7,8 @@ const router = express.Router();
  * @openapi
  * /user/signin:
  *   post:
+ *     tags:
+ *        - User APIs
  *     summary: Sing in user
  *     requestBody:
  *       required: true
@@ -24,7 +26,7 @@ const router = express.Router();
  *                       description: password
  *                       example: password
  *     responses:
- *       201:
+ *       200:
  *         description: Pass requried information
  *         content:
  *           application/json:
@@ -68,6 +70,8 @@ router.post("/signin", signin);
  * @openapi
  * /user/signup:
  *   post:
+ *     tags:
+ *        - User APIs
  *     summary: Register and create user account
  *     requestBody:
  *       required: true
@@ -93,7 +97,7 @@ router.post("/signin", signin);
  *                       description: confirm password
  *                       example: asdfaq2414324
  *     responses:
- *       201:
+ *       200:
  *         description: User information
  *         content:
  *           application/json:
@@ -136,6 +140,8 @@ router.post("/signup", signup);
  * @openapi
  * /user/google-login:
  *   post:
+ *     tags:
+ *        - User APIs
  *     summary: Login with google account
  *     requestBody:
  *       required: true
@@ -149,7 +155,7 @@ router.post("/signup", signup);
  *                       description: pass gogole token ID
  *                       example: "qrqwtqwtqwrwqrqwrqwtqwrqrqwrqeqwe"
  *     responses:
- *       201:
+ *       200:
  *         description: User information
  *         content:
  *           application/json:
@@ -188,12 +194,59 @@ router.post("/signup", signup);
 */
 router.post("/google-login", googleLogin);
 
+/**
+ * @openapi
+ * /user/get-user:
+ *   get:
+ *     tags:
+ *        - User APIs
+ *     summary: Get user data
+ *     responses:
+ *       200:
+ *         description: User information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                     userName:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: Leanne Graham
+ *                     email:
+ *                       type: string
+ *                       description: The user's email.
+ *                       example: waht@gmail.com
+ *                     password:
+ *                       type: string
+ *                       description: The user's password.
+ *                       example: asdfaq2414324
+ *                     _id:
+ *                       type: string
+ *                       description: uesr id.
+ *                       example: asdfaq2414324
+ *                     isVerified:
+ *                       type: boolean
+ *                       description: user email verification.
+ *                       example: false
+ *                     createdAt:
+ *                       type: date time
+ *                       description: created date
+ *                       example: 2022-05-17T22:00:24.332+00:00
+ *                     updatedAt:
+ *                       type: date time
+ *                       description: updated date
+ *                       example: 2022-05-17T22:00:24.332+00:00
+ *                   
+*/
 router.get("/get-user", userAuth, getUser);
 
 /**
  * @openapi
  * /user/update:
  *   patch:
+ *     tags:
+ *        - User APIs
  *     summary: Update user
  *     requestBody:
  *       required: true
@@ -207,7 +260,7 @@ router.get("/get-user", userAuth, getUser);
  *                       description: userName
  *                       example: "John Doe"
  *     responses:
- *       201:
+ *       200:
  *         description: Created
  *         content:
  *           application/json:
@@ -249,6 +302,8 @@ router.patch("/update", userAuth, updateUser);
  * @openapi
  * /user/verify-user:
  *   post:
+ *     tags:
+ *        - User APIs
  *     summary: Verfify user email
  *     requestBody:
  *       required: true
@@ -307,8 +362,10 @@ router.post("/verify-user", verifyEmail)
 
 /**
  * @openapi
- * /user/verify-user:
+ * /user/resend-otp:
  *   post:
+ *     tags:
+ *        - User APIs
  *     summary: Resend OTP to user email
  *     requestBody:
  *       required: true

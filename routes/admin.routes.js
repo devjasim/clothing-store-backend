@@ -7,6 +7,8 @@ const router = express.Router();
  * @openapi
  * /admin/signin:
  *   post:
+ *     tags:
+ *        - Admin APIs
  *     summary: Sing in as admin
  *     requestBody:
  *       required: true
@@ -74,6 +76,8 @@ router.post("/signup", signup);
  * @openapi
  * /admin/get-users:
  *   get:
+ *     tags:
+ *       - Admin APIs
  *     responses:
  *       201:
  *         description: Get register users data
@@ -124,6 +128,8 @@ router.get('/get-users', adminAuth, getUsers);
  * @openapi
  * /admin/delete-user/{id}:
  *   delete:
+ *     tags:
+ *       - Admin APIs
  *     parameters:
  *       - in: path
  *         name: id
@@ -181,6 +187,8 @@ router.delete('/delete-user/:id', adminAuth, deleteUser);
  * @openapi
  * /admin/update-user/{id}:
  *   patch:
+ *     tags:
+ *       - Admin APIs
  *     summary: Update user
  *     parameters:
  *       - in: path
@@ -201,7 +209,7 @@ router.delete('/delete-user/:id', adminAuth, deleteUser);
  *                       description: userName
  *                       example: "John Doe"
  *     responses:
- *       201:
+ *       200:
  *         description: Created
  *         content:
  *           application/json:
@@ -244,6 +252,8 @@ router.patch('/update-user/:id', adminAuth, updateUser);
  * @openapi
  * /admin/get-user/{id}:
  *   get:
+ *     tags:
+ *       - Admin APIs
  *     parameters:
  *       - in: path
  *         name: id
@@ -301,6 +311,8 @@ router.get('/get-user/:id', adminAuth, getUserById);
  * @openapi
  * /admin/dashboard:
  *   get:
+ *     tags:
+ *       - Admin APIs
  *     responses:
  *       200:
  *         description: Get dashboard data
@@ -335,6 +347,8 @@ router.get('/dashboard', adminAuth, dashboard);
  * @openapi
  * /admin/create-user:
  *   post:
+ *     tags:
+ *       - Admin APIs
  *     summary: Creat new user
  *     requestBody:
  *       required: true
