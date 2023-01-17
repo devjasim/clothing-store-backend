@@ -1,23 +1,19 @@
 {
-  "name": "stablespay-backend",
+  "name": "commerce-backend",
   "version": "1.0.0",
-  "description": "mongodb+srv://Timon0305:stablespay@stablespay.prrea.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "description": "Alamin Commerce Backend Service",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://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@github.com/StablesPay-Stage/stablespay-backend.git"
+    "url": ""
   },
   "keywords": [],
   "author": "",
   "type": "module",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/StablesPay-Stage/stablespay-backend/issues"
-  },
-  "homepage": "https://github.com/StablesPay-Stage/stablespay-backend#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",

@@ -37,9 +37,8 @@ export const signup = async(req, res) => {
   try {
     const OTP = generateOtp();
     const existingUser = await User.findOne({ email, roles: "user" });
-    if(existingUser && !existingUser?.isVerified) return res.status(400).json({message: "User already exists and not verified"})
 
-    if(existingUser && existingUser?.isVerified === true) return res.status(400).json({message: "User already exists."})
+    if(existingUser) return res.status(400).json({message: "User already exists."})
 
     if(password !== confirmPassword) return res.status(400).json({ message: "Password don't match." })
 
@@ -47,7 +46,7 @@ export const signup = async(req, res) => {
 
     const hashedOtp = await bcrypt.hash(OTP.toString(), 12);
 
-    const result = await User.create({ email, password: hashedPassword, changePass: true, userName: userName, otp: hashedOtp })
+    const result = await User.create({ email, password: hashedPassword, isVerified: true, changePass: true, userName: userName, otp: hashedOtp })
 
     try {
       await sendMail({

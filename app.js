@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 
 import userRoutes from './routes/users.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import adminProductRoutes from './routes/admin.product.routes.js';
+import productRoutes from './routes/product.routes.js';
 import swaggerDocs from "./swagger.js";
 import config from "./config/config.js";
 
@@ -30,5 +32,7 @@ mongoose.connect(CONNECTION_URL, {
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/admin", adminProductRoutes);
+app.use("/api/v1/user", productRoutes);
 
 
